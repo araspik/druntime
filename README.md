@@ -29,7 +29,7 @@ own versions of DRuntime. While the implementations
 may differ, the interfaces should be the same.
 
 This version goes beyond and tries to unify the compiler's
-abstraction by 
+abstraction by providing support for all 3 major compilers.
 
 Features
 --------
