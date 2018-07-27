@@ -7,13 +7,12 @@ DRuntime will want to know.
 Code style
 ----------
 
-Please follow the D style guide when writing code for
-DRuntime: http://dlang.org/dstyle.html
-
-The D style guide doesn't cover everything so when in
-doubt, use the code style already used in the module you
-are modifying, or whatever style you prefer if you're
-adding a new module.
+The original DRuntime follows [this](https://dlang.org/dstyle.html).
+This version only notes two exceptions:
+* For whitespace, hardware tabs should be used
+* Opening braces *do not* have their own line.
+Please stick to everything in the style guide aside from the two
+above exceptions noted, including the section on Phobos.
 
 Publicity of modules
 --------------------
@@ -26,32 +25,23 @@ The convention is to put private modules in the 'rt' or
 'gc' packages depending on what they do and only put
 public modules in 'core'.
 
-Also, always avoid importing private modules in public
-modules. If a public module consists of a header file
-and an implementation file (which are both maintained by
-hand) then it is OK to import private modules in the
-implementation file.
+Ensure that no defined private modules (such as those in
+'rt' and 'gc') are publicly imported by public-defined
+module (such as those in 'core').
 
 Adding new modules
 ------------------
 
-When adding a new module, remember to update all three
-makefiles as necessary:
-
-* posix.mak
-* win32.mak
-* win64.mak
-
-A number of shared utility makefiles also need to be
-updated:
-
-* mak/COPY
-* mak/DOCS
-* mak/IMPORTS
-* mak/SRCS
+If adding platform-dependent modules, remember to update
+`CMakePlatformFiles.txt`.
 
 Operating system bindings
 -------------------------
+
+Even though this fork of DRuntime does not explicitly
+depend on any external items (such as the C library), it
+will still provide the same support as provided by the
+original DRuntime.
 
 The 'core.sys' package provides bindings to most APIs
 provided by supported operating systems.
@@ -114,12 +104,23 @@ behind for the old symbol name *is* an ABI break. The
 compiled name will be the new symbol, thus breaking old
 binaries.
 
+If it is absolutely required to rename a symbol, attempt
+to leave an object-level alias for it, *not* just the
+`alias`. It would be beneficial to join both:
+```d
+void newFoo(int a, int b);
+@alias(newFoo) void oldFoo(int a, int b);
+```
+Unfortunately, this is just an idea until a system-agnostic
+method can be developed. This is what it _would_ look like
+once it is completed.
+
 Updating the change log
 -----------------------
 
 If your pull request isn't a trivial bug fix, it
 should be accompanied by a changelog entry explaining
 the change in more details.
-Please see the [`/changelog`](https://github.com/dlang/druntime/tree/master/changelog)
+Please see the [`/changelog`](https://github.com/araspik/druntime/tree/master/changelog)
 directory for detailed instructions.
 DAutoTest will allow you and your reviewers to preview the rendered changelog entry.
