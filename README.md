@@ -1,20 +1,24 @@
 DRuntime: Runtime Library for the D Programming Language
 ========================================================
 
-[![GitHub tag](https://img.shields.io/github/tag/dlang/druntime.svg?maxAge=86400)](https://github.com/dlang/druntime/releases)
-[![Bugzilla Issues](https://img.shields.io/badge/issues-Bugzilla-green.svg)](https://issues.dlang.org/buglist.cgi?component=druntime&list_id=220148&product=D&resolution=---)
-[![Build status](https://img.shields.io/circleci/project/dlang/druntime.svg?maxAge=86400)](https://circleci.com/gh/dlang/druntime)
-[![Code coverage](https://img.shields.io/codecov/c/github/dlang/druntime.svg?maxAge=86400)](https://codecov.io/gh/dlang/druntime)
-[![Issue Stats](https://img.shields.io/issuestats/p/github/dlang/druntime.svg?maxAge=2592000)](http://www.issuestats.com/github/dlang/druntime)
-[![license](https://img.shields.io/github/license/dlang/druntime.svg)](https://github.com/dlang/druntime/blob/master/LICENSE.txt)
-
 This is DRuntime. It is the low-level runtime library
 backing the D programming language.
+
+This fork removes the need for a C library and provides
+bare-metal support as well as support for common
+platforms. It aims to be usable on all three major
+compilers - DMD (may not have enough low-level support),
+GDC, and LDC.
 
 DRuntime is typically linked together with Phobos in a
 release such that the compiler only has to link to a
 single library to provide the user with the runtime and
 the standard library.
+
+However, this version is meant to be switchable-out so
+that a compiler can compile code that can integrate with
+C easily (for example, using the same allocators) or one
+which can work bare-metal or standalone (no C interfacing).
 
 Purpose
 -------
@@ -24,10 +28,17 @@ compiler. Different compilers will likely have their
 own versions of DRuntime. While the implementations
 may differ, the interfaces should be the same.
 
+This version goes beyond and tries to unify the compiler's
+abstraction by 
+
 Features
 --------
 
 The runtime library provides the following:
+
+Note that in this fork, much of this will have to be rewritten in order to
+remove dependencies on the C library and made as platform-independent as
+possible. At the moment, very little works.
 
 * The Object class, the root of the class hierarchy.
 * Implementations of array operations.
@@ -49,18 +60,13 @@ The runtime library provides the following:
 * Unit test, coverage, and trace support code.
 * Low-level helpers for compiler-inserted calls.
 
-Issues
-------
-
-To report a bug or look up known issues with the runtime library, please visit
-the [bug tracker](http://issues.dlang.org/).
-
 Licensing
 ---------
 
-See the [LICENSE.txt](https://github.com/dlang/druntim/blob/master/LICENSE.txt) file for licensing information.
+See the [LICENSE.txt](https://github.com/araspik/druntime/blob/master/LICENSE.txt) file for licensing information.
 
 Building
 --------
 
-See the [wiki page](http://wiki.dlang.org/Building_DMD) for build instructions.
+The project is set up with CMake.
+TODO: Nothing works right now.
